@@ -1,8 +1,6 @@
 ﻿
-
 namespace InventoryManagement
 {
-
   public class Item
   {
     private readonly string? name; // ? removes Non-nullable field 'name' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.CS8618
@@ -18,13 +16,21 @@ namespace InventoryManagement
 
     public Item(string name, int quantity, DateTime createdDate = default)  // createdDate optional
     {
-      if (quantity < 0)
+      try
       {
-        //error argument exception can't be negative
+        if (quantity < 0)
+        {
+          //error argument exception can't be negative
+          throw new ArgumentException();
+        }
+        Name = name;
+        Quantity = quantity;
+        createdDate = createdDate == default ? DateTime.Now : createdDate;
       }
-      Name = name;
-      Quantity = quantity;
-      createdDate = createdDate == default ? DateTime.Now : createdDate;
+      catch (ArgumentException)
+      {
+        Console.WriteLine($"quantity can't be negative");
+      }
     }
 
     // override ToString method to display an object
@@ -35,7 +41,6 @@ namespace InventoryManagement
 
   }
 
-
   public class Store
   {
     private List<Item> items = new List<Item>();
@@ -43,16 +48,18 @@ namespace InventoryManagement
     public void AddItem(Item item)
     {
       //Do not allow to add items with same name to the store
-      bool isExist = items.Any(i => i.Name.ToLower() == item.Name.ToLower());
-      if (isExist)
+      Console.WriteLine($"item to be added: {item}");
+      if (item.Name != null)
       {
-        //msg exists
-        Console.WriteLine($"item is exists");
-        return;
+        bool isExist = items.Any(i => i.Name.ToLower() == item.Name.ToLower());
+        if (isExist)
+        {
+          Console.WriteLine($"item exists");
+          return;
+        }
+        items.Add(item);
+        Console.WriteLine($"added {item.Name}");
       }
-      items.Add(item);
-      Console.WriteLine($"added {item.Name}");
-
     }
     public void DeleteItem(string itemName)
     {
@@ -67,7 +74,6 @@ namespace InventoryManagement
         }
         else
         {
-          //msg not exists
           Console.WriteLine($"item is not exists");
         }
       }
@@ -86,39 +92,55 @@ namespace InventoryManagement
         Item? itemFound = items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
         if (itemFound != null)
         {
-          //msg found 
           Console.WriteLine($"item {itemName} is found");
         }
         else
         {
-          //msg not exists 
           Console.WriteLine($"item {itemName} is not found");
         }
       }
     }
-    public static void SortByNameAscto(string name)
+    public List<Item> SortByNameAsc()
     {
       // get the sorted collection by name in ascending order.
+      return items.OrderBy(item => item.Name).ToList();
+    }
+
+    public void Display(List<Item> items)
+    {
+      foreach (var item in items)
+        Console.WriteLine($"{item}");
     }
 
     static void Main(string[] args)
     {
       var waterBottle = new Item("Water Bottle", 10, new DateTime(2023, 1, 1));
-      var waterBottle2 = new Item("Bottle", 20, new DateTime(2023, 1, 1));
+      var waterBottle2 = new Item("Bottle2", 20, new DateTime(2023, 1, 1));
+      var waterBottle3 = new Item("Bottle3", -5, new DateTime(2023, 1, 1));
       var umbrella = new Item("Umbrella", 5);
       var store1 = new Store();
+
       store1.AddItem(waterBottle);
       store1.AddItem(waterBottle2);
+      store1.AddItem(waterBottle3);
       store1.AddItem(umbrella);
+
       store1.FindItemByName("umbrella");
       Console.WriteLine($"umbrella obj: {umbrella}");
+
       int currentVolume = store1.GetCurrentVolume();
       Console.WriteLine($"{currentVolume}");
-      store1.DeleteItem("Umbrella");
+
+      // store1.DeleteItem("Umbrella");
       store1.FindItemByName("umbrella");
+
+      // sorting then displaying
+      var sortedItemsAsc = store1.SortByNameAsc();
+      Console.WriteLine($"\nSorted collection by name in ascending order:");
+      foreach (var item in sortedItemsAsc)
+        Console.WriteLine($"{item}");
     }
   }
-
 }
 
 
