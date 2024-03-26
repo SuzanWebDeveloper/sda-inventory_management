@@ -6,15 +6,11 @@ namespace InventoryManagement
     private readonly string? _name; // ? removes Non-nullable field 'name' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.CS8618
     private int _quantity;
     private DateTime _createdDate;
-    public string Name { get; }
-    public int Quantity
-    {
-      get;
-      set;
-    }
+    public string? Name { get; }
+    public int Quantity { get; set; }
     public DateTime CreatedDate { get; set; }
 
-    public Item(string name, int quantity, DateTime createdDate = default)  // createdDate optional
+    public Item(string name, int quantity, DateTime createdDate = default)  // createdDate is optional
     {
       try
       {
@@ -73,19 +69,15 @@ namespace InventoryManagement
     }
     public void DeleteItem(string itemName)
     {
-      if (_items != null)
+      Item itemFound = FindItemByName(itemName);
+      if (itemFound != null)
       {
-        // ? removes Converting null literal or possible null value to non-nullable type.CS8600 // ArgumentNullException
-        Item? itemToDelete = _items.FirstOrDefault(oneItem => oneItem.Name.ToLower() == itemName.ToLower());
-        if (itemToDelete != null)
-        {
-          _items.Remove(itemToDelete);
-          Console.WriteLine($"item deleted successfully");
-        }
-        else
-        {
-          Console.WriteLine($"item is not exists");
-        }
+        _items.Remove(itemFound);
+        Console.WriteLine($"item deleted successfully");
+      }
+      else
+      {
+        Console.WriteLine($"item does not exist");
       }
     }
     public int GetCurrentVolume()
@@ -94,21 +86,27 @@ namespace InventoryManagement
       int totalItems = _items.Sum(item => item.Quantity);
       return totalItems;
     }
-    public void FindItemByName(string itemName)
+    public Item FindItemByName(string itemName)
     {
-      if (!string.IsNullOrEmpty(itemName))
-      {
-        Item? itemFound = _items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
-        if (itemFound != null)
-        {
-          Console.WriteLine($"item {itemName} is found");
-        }
-        else
-        {
-          Console.WriteLine($"item {itemName} is not found");
-        }
-      }
+      return _items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
     }
+
+    // Why this code gets error?
+    // if (!string.IsNullOrEmpty(itemName))
+    // {
+    //   Item? itemFound = _items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
+    //   if (itemFound != null)
+    //   {
+    //     Console.WriteLine($"item {itemName} is found");
+    //     return itemFound;
+    //   }
+    //   else
+    //   {
+    //     Console.WriteLine($"item {itemName} is not found");
+    //     return null;
+    //   }
+    // }
+    //}
     public List<Item> SortByNameAsc()
     {
       // get the sorted collection by name in ascending order.
