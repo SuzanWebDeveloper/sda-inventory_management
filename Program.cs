@@ -19,7 +19,7 @@ namespace InventoryManagement
 
         Name = name;
         Quantity = quantity;
-        createdDate = createdDate == default ? DateTime.Now : createdDate;
+        CreatedDate = createdDate == default ? DateTime.Now : createdDate;
       }
       catch (ArgumentException)
       {
@@ -72,7 +72,7 @@ namespace InventoryManagement
       if (itemFound != null)
       {
         _items.Remove(itemFound);
-        Console.WriteLine($"item deleted successfully");
+        Console.WriteLine($"item is deleted successfully");
       }
       else
       {
