@@ -8,12 +8,14 @@ public class Program
     var waterBottle2 = new Item("Bottle2", 20, new DateTime(2023, 1, 1));
     var waterBottle3 = new Item("Bottle3", -5, new DateTime(2023, 1, 1));
     var umbrella = new Item("Umbrella", 5);
+    var coffee = new Item("Coffee", 70);
     var store1 = new Store();
 
     store1.AddItem(waterBottle);
     store1.AddItem(waterBottle2);
     store1.AddItem(waterBottle3);
     store1.AddItem(umbrella);
+    store1.AddItem(coffee);
 
     store1.FindItemByName("umbrella");
     Console.WriteLine($"umbrella obj: {umbrella}");
