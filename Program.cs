@@ -7,7 +7,7 @@ namespace InventoryManagement
     private int quantity;
     private DateTime createdDate;
     public string Name { get; }
-    public int Quantity  // try later with just get; set;
+    public int Quantity
     {
       get;
       set;
@@ -20,7 +20,6 @@ namespace InventoryManagement
       {
         if (quantity < 0)
         {
-          //error argument exception can't be negative
           throw new ArgumentException();
         }
         Name = name;
@@ -44,11 +43,22 @@ namespace InventoryManagement
   public class Store
   {
     private List<Item> items = new List<Item>();
+    private readonly int maxItemsCapacity;
+
+    public Store()
+    {
+      maxItemsCapacity = 100;
+    }
 
     public void AddItem(Item item)
     {
+      if (GetCurrentVolume() > maxItemsCapacity)
+      {
+        Console.WriteLine($"Max capacity is reached, can't add {item}");
+        return;
+      }
       //Do not allow to add items with same name to the store
-      Console.WriteLine($"item to be added: {item}");
+      Console.WriteLine($"Item to be added: {item}");
       if (item.Name != null)
       {
         bool isExist = items.Any(i => i.Name.ToLower() == item.Name.ToLower());
@@ -58,7 +68,7 @@ namespace InventoryManagement
           return;
         }
         items.Add(item);
-        Console.WriteLine($"added {item.Name}");
+        Console.WriteLine($"added {item.Name}\n");
       }
     }
     public void DeleteItem(string itemName)
@@ -86,7 +96,6 @@ namespace InventoryManagement
     }
     public void FindItemByName(string itemName)
     {
-      // find an item by name.
       if (!string.IsNullOrEmpty(itemName))
       {
         Item? itemFound = items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
@@ -129,10 +138,11 @@ namespace InventoryManagement
       Console.WriteLine($"umbrella obj: {umbrella}");
 
       int currentVolume = store1.GetCurrentVolume();
-      Console.WriteLine($"{currentVolume}");
+      Console.WriteLine($"total quantity: {currentVolume}");
 
-      // store1.DeleteItem("Umbrella");
-      store1.FindItemByName("umbrella");
+      // test delete:
+      //store1.DeleteItem("Umbrella");
+      //store1.FindItemByName("umbrella");
 
       // sorting then displaying
       var sortedItemsAsc = store1.SortByNameAsc();
