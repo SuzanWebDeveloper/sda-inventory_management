@@ -3,9 +3,9 @@ namespace InventoryManagement
 {
   public class Item
   {
-    private readonly string? name; // ? removes Non-nullable field 'name' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.CS8618
-    private int quantity;
-    private DateTime createdDate;
+    private readonly string? _name; // ? removes Non-nullable field 'name' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.CS8618
+    private int _quantity;
+    private DateTime _createdDate;
     public string Name { get; }
     public int Quantity
     {
@@ -18,7 +18,7 @@ namespace InventoryManagement
     {
       try
       {
-        if (quantity < 0)
+        if (_quantity < 0)
         {
           throw new ArgumentException();
         }
@@ -42,17 +42,17 @@ namespace InventoryManagement
 
   public class Store
   {
-    private List<Item> items = new List<Item>();
-    private readonly int maxItemsCapacity;
+    private List<Item> _items = new List<Item>();
+    private readonly int _maxItemsCapacity;
 
     public Store()
     {
-      maxItemsCapacity = 100;
+      _maxItemsCapacity = 100;
     }
 
     public void AddItem(Item item)
     {
-      if (GetCurrentVolume() > maxItemsCapacity)
+      if (GetCurrentVolume() > _maxItemsCapacity)
       {
         Console.WriteLine($"Max capacity is reached, can't add {item}");
         return;
@@ -61,25 +61,25 @@ namespace InventoryManagement
       Console.WriteLine($"Item to be added: {item}");
       if (item.Name != null)
       {
-        bool isExist = items.Any(i => i.Name.ToLower() == item.Name.ToLower());
+        bool isExist = _items.Any(i => i.Name.ToLower() == item.Name.ToLower());
         if (isExist)
         {
           Console.WriteLine($"item exists");
           return;
         }
-        items.Add(item);
+        _items.Add(item);
         Console.WriteLine($"added {item.Name}\n");
       }
     }
     public void DeleteItem(string itemName)
     {
-      if (items != null)
+      if (_items != null)
       {
         // ? removes Converting null literal or possible null value to non-nullable type.CS8600 // ArgumentNullException
-        Item? itemToDelete = items.FirstOrDefault(oneItem => oneItem.Name.ToLower() == itemName.ToLower());
+        Item? itemToDelete = _items.FirstOrDefault(oneItem => oneItem.Name.ToLower() == itemName.ToLower());
         if (itemToDelete != null)
         {
-          items.Remove(itemToDelete);
+          _items.Remove(itemToDelete);
           Console.WriteLine($"item deleted successfully");
         }
         else
@@ -91,14 +91,14 @@ namespace InventoryManagement
     public int GetCurrentVolume()
     {
       //compute the total amount of items in the store
-      int totalItems = items.Sum(item => item.Quantity);
+      int totalItems = _items.Sum(item => item.Quantity);
       return totalItems;
     }
     public void FindItemByName(string itemName)
     {
       if (!string.IsNullOrEmpty(itemName))
       {
-        Item? itemFound = items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
+        Item? itemFound = _items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
         if (itemFound != null)
         {
           Console.WriteLine($"item {itemName} is found");
@@ -112,7 +112,7 @@ namespace InventoryManagement
     public List<Item> SortByNameAsc()
     {
       // get the sorted collection by name in ascending order.
-      return items.OrderBy(item => item.Name).ToList();
+      return _items.OrderBy(item => item.Name).ToList();
     }
 
     public void Display(List<Item> items)
