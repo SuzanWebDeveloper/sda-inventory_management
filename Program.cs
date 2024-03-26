@@ -14,10 +14,9 @@ namespace InventoryManagement
     {
       try
       {
-        if (_quantity < 0)
-        {
+        if (quantity < 0)
           throw new ArgumentException();
-        }
+
         Name = name;
         Quantity = quantity;
         createdDate = createdDate == default ? DateTime.Now : createdDate;
