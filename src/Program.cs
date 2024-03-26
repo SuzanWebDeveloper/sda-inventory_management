@@ -28,8 +28,7 @@ public class Program
     // sorting then displaying
     var sortedItemsAsc = store1.SortByNameAsc();
     Console.WriteLine($"\nSorted collection by name in ascending order:");
-    foreach (var item in sortedItemsAsc)
-      Console.WriteLine($"{item}");
+    store1.Display(sortedItemsAsc);
   }
 }
 
