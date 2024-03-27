@@ -22,7 +22,7 @@ public class Store
     try
     {
       if (GetCurrentVolume() + item.Quantity > _maxItemsCapacity)
-        throw new ArgumentOutOfRangeException();
+        throw new ArgumentOutOfRangeException(null, $"Max capacity is reached, can't add {item}\n");
 
       //Do not allow to add items with same name to the store
       Console.WriteLine($"Item to be added: {item}");
@@ -30,17 +30,19 @@ public class Store
       {
         bool isExist = _items.Any(i => string.Equals(i.Name?.ToLower(), item.Name.ToLower()));
         if (isExist)
-        {
-          Console.WriteLine($"item exists, can't be added");
-          return;
-        }
+          throw new ArgumentException("item exists, can't be added");
+
         _items.Add(item);
         Console.WriteLine($"added {item.Name}\n");
       }
     }
-    catch (ArgumentOutOfRangeException)
+    catch (ArgumentOutOfRangeException e)
     {
-      Console.WriteLine($"Max capacity is reached, can't add {item}\n");
+      Console.WriteLine($"{e.Message}\n");
+    }
+    catch (ArgumentException e)
+    {
+      Console.WriteLine($"{e.Message}\n");
     }
   }
   public void DeleteItem(string itemName)
