@@ -28,10 +28,10 @@ public class Store
       Console.WriteLine($"Item to be added: {item}");
       if (item.Name != null)
       {
-        bool isExist = _items.Any(i => i.Name.ToLower() == item.Name.ToLower());
+        bool isExist = _items.Any(i => string.Equals(i.Name?.ToLower(), item.Name.ToLower()));
         if (isExist)
         {
-          Console.WriteLine($"item exists");
+          Console.WriteLine($"item exists, can't be added");
           return;
         }
         _items.Add(item);
@@ -40,7 +40,7 @@ public class Store
     }
     catch (ArgumentOutOfRangeException)
     {
-      Console.WriteLine($"Max capacity is reached, can't add {item}");
+      Console.WriteLine($"Max capacity is reached, can't add {item}\n");
     }
   }
   public void DeleteItem(string itemName)
@@ -64,8 +64,9 @@ public class Store
   }
   public Item FindItemByName(string itemName)
   {
-    return _items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
+    return _items.FirstOrDefault(item => string.Equals(item.Name.ToLower(), itemName.ToLower()));  //NullReferenceException
   }
+  //string.Equals(item.Name.ToLower(), itemName.ToLower()));
 
   // Why this code gets error?
   // if (!string.IsNullOrEmpty(itemName))
