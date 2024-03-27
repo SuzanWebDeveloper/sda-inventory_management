@@ -1,4 +1,6 @@
 
+using System.Net.Http.Headers;
+
 namespace InventoryManagement;
 
 public enum SortOrder
@@ -28,7 +30,7 @@ public class Store
       Console.WriteLine($"Item to be added: {item}");
       if (item.Name != null)
       {
-        bool isExist = _items.Any(i => string.Equals(i.Name?.ToLower(), item.Name.ToLower()));
+        bool isExist = _items.Any(i => string.Equals(i.Name, item.Name, StringComparison.OrdinalIgnoreCase));
         if (isExist)
           throw new ArgumentException("item exists, can't be added");
 
@@ -66,26 +68,10 @@ public class Store
   }
   public Item FindItemByName(string itemName)
   {
-    return _items.FirstOrDefault(item => string.Equals(item.Name.ToLower(), itemName.ToLower()));  //NullReferenceException
-  }
-  //string.Equals(item.Name.ToLower(), itemName.ToLower()));
+    return _items.FirstOrDefault(item => string.Equals(item.Name, itemName, StringComparison.OrdinalIgnoreCase));  //NullReferenceException
 
-  // Why this code gets error?
-  // if (!string.IsNullOrEmpty(itemName))
-  // {
-  //   Item? itemFound = _items.FirstOrDefault(item => item.Name.ToLower() == itemName.ToLower());  //NullReferenceException
-  //   if (itemFound != null)
-  //   {
-  //     Console.WriteLine($"item {itemName} is found");
-  //     return itemFound;
-  //   }
-  //   else
-  //   {
-  //     Console.WriteLine($"item {itemName} is not found");
-  //     return null;
-  //   }
-  // }
-  //}
+  }
+
   public List<Item> SortByNameAsc()
   {
     // get the sorted collection by name in ascending order.
@@ -101,6 +87,18 @@ public class Store
     {
       return _items.OrderByDescending(item => item.CreatedDate).ToList();
     }
+  }
+
+  public Dictionary<string, List<Item>> GroupByDate()
+  {
+    //three months ago
+    DateTime threeMonthsAgo = DateTime.Now.AddMonths(-3);
+
+    var groupByDate = _items.GroupBy(item =>
+      DateTime.Compare(item.CreatedDate, threeMonthsAgo) >= 0 ?
+         "New Arrival" : "Old").ToDictionary(group => group.Key, group => group.ToList());
+  
+    return groupByDate;
   }
 
   public void Display(List<Item> items)
