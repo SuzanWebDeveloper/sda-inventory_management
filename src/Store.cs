@@ -1,14 +1,20 @@
 
 namespace InventoryManagement;
 
+public enum SortOrder
+{
+  ASC,
+  DESC
+}
+
 public class Store
 {
   private List<Item> _items = new List<Item>();
   private readonly int _maxItemsCapacity;
 
-  public Store()
+  public Store(int maxItemsCapacity)
   {
-    _maxItemsCapacity = 100;
+    _maxItemsCapacity = maxItemsCapacity;
   }
 
   public void AddItem(Item item)
@@ -81,6 +87,17 @@ public class Store
   {
     // get the sorted collection by name in ascending order.
     return _items.OrderBy(item => item.Name).ToList();
+  }
+
+  public List<Item> SortByDate(SortOrder sortOrder)
+  {
+    // get the sorted collection by date in ascending or descending order.
+    if (sortOrder == SortOrder.ASC)
+      return _items.OrderBy(item => item.CreatedDate).ToList();
+    else
+    {
+      return _items.OrderByDescending(item => item.CreatedDate).ToList();
+    }
   }
 
   public void Display(List<Item> items)
