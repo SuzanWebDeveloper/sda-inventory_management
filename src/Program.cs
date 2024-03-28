@@ -1,25 +1,9 @@
 ﻿
-using System.Runtime.CompilerServices;
 using InventoryManagement;
 public class Program
 {
   static void Main(string[] args)
   {
-    // var waterBottle3 = new Item("Bottle3", -5, new DateTime(2023, 1, 1));
-    // var umbrella2 = new Item("umbrella", 5);
-    // var coffee = new Item("Coffee2", 70);
-    // var result = store1.FindItemByName("umbrell");
-    // Console.WriteLine($"umbrella obj: {result}");
-
-    // int currentVolume = store1.GetCurrentVolume();
-    // Console.WriteLine($"total quantity: {currentVolume}");
-
-    //// test delete:
-    //// store1.DeleteItem("Umbrella");
-    //// store1.FindItemByName("umbrella");
-
-    //--------------------------------------
-
     var waterBottle = new Item("Water Bottle", 10, new DateTime(2023, 1, 1));
     var chocolateBar = new Item("Chocolate Bar", 15, new DateTime(2023, 2, 1));
     var notebook = new Item("Notebook", 5, new DateTime(2023, 3, 1));
@@ -35,6 +19,12 @@ public class Program
     var batteries = new Item("Batteries", 10);
     var umbrella = new Item("Umbrella", 5);
     var sunscreen = new Item("Sunscreen", 8);
+    //--------------------------
+    var waterBottle3 = new Item("Bottle3", -5, new DateTime(2023, 1, 1));
+    var umbrella2 = new Item("umbrella", 5);
+    var coffee2 = new Item("Coffee2", 70);
+
+    //--------------------------
 
     var store = new Store(300);
 
@@ -54,14 +44,30 @@ public class Program
     store.AddItem(umbrella);
     store.AddItem(sunscreen);
 
-    // // sorting then displaying
-    // var sortedItemsAsc = store.SortByNameAsc();
-    // Console.WriteLine($"\nSorted collection by name in ascending order:");
-    // store.Display(sortedItemsAsc);
+    store.AddItem(waterBottle3);
+    store.AddItem(umbrella2);
+    store.AddItem(coffee2);
 
-    // var collectionSortedByDate = store.SortByDate(SortOrder.DESC);
-    // Console.WriteLine($"\nSorted collection by date in descending order:");
-    // store.Display(collectionSortedByDate);
+    //------------------------
+
+    var result = store.FindItemByName("umbrell");
+    Console.WriteLine($"umbrella obj: {result}\n");
+
+    int currentVolume = store.GetCurrentVolume();
+    Console.WriteLine($"total quantity: {currentVolume}\n");
+
+    // test delete:
+    // store.DeleteItem("Umbrella");
+    // store.FindItemByName("umbrella");
+
+    // sorting then displaying
+    var sortedItemsAsc = store.SortByNameAsc();
+    Console.WriteLine($"\nSorted collection by name in ascending order:");
+    store.Display(sortedItemsAsc);
+
+    var collectionSortedByDate = store.SortByDate(SortOrder.DESC);
+    Console.WriteLine($"\nSorted collection by date in descending order:");
+    store.Display(collectionSortedByDate);
 
     Console.WriteLine($"-----------------------------");
 

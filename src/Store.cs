@@ -1,6 +1,3 @@
-
-using System.Net.Http.Headers;
-
 namespace InventoryManagement;
 
 public enum SortOrder
@@ -49,7 +46,7 @@ public class Store
   }
   public void DeleteItem(string itemName)
   {
-    Item itemFound = FindItemByName(itemName);
+    Item? itemFound = FindItemByName(itemName);
     if (itemFound != null)
     {
       _items.Remove(itemFound);
@@ -66,10 +63,9 @@ public class Store
     int totalItems = _items.Sum(item => item.Quantity);
     return totalItems;
   }
-  public Item FindItemByName(string itemName)
+  public Item? FindItemByName(string itemName)
   {
-    return _items.FirstOrDefault(item => string.Equals(item.Name, itemName, StringComparison.OrdinalIgnoreCase));  //NullReferenceException
-
+    return _items.FirstOrDefault(item => string.Equals(item.Name, itemName, StringComparison.OrdinalIgnoreCase));
   }
 
   public List<Item> SortByNameAsc()
@@ -97,7 +93,7 @@ public class Store
     var groupByDate = _items.GroupBy(item =>
       DateTime.Compare(item.CreatedDate, threeMonthsAgo) >= 0 ?
          "New Arrival" : "Old").ToDictionary(group => group.Key, group => group.ToList());
-  
+
     return groupByDate;
   }
 
