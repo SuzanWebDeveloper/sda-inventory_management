@@ -23,7 +23,6 @@ public class Program
     var waterBottle3 = new Item("Bottle3", -5, new DateTime(2023, 1, 1));
     var umbrella2 = new Item("umbrella", 5);
     var coffee2 = new Item("Coffee2", 70);
-
     //--------------------------
 
     var store = new Store(300);
@@ -45,6 +44,7 @@ public class Program
     store.AddItem(sunscreen);
 
     store.AddItem(waterBottle3);
+
     store.AddItem(umbrella2);
     store.AddItem(coffee2);
 

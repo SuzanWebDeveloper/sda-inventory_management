@@ -22,18 +22,16 @@ public class Store
     {
       if (GetCurrentVolume() + item.Quantity > _maxItemsCapacity)
         throw new ArgumentOutOfRangeException(null, $"Max capacity is reached, can't add {item}\n");
-
+      if (item.Name == null)
+        throw new ArgumentException("invalid item");
       //Do not allow to add items with same name to the store
-      Console.WriteLine($"Item to be added: {item}");
-      if (item.Name != null)
-      {
-        bool isExist = _items.Any(i => string.Equals(i.Name, item.Name, StringComparison.OrdinalIgnoreCase));
-        if (isExist)
-          throw new ArgumentException("item exists, can't be added");
+      bool isExist = _items.Any(i => string.Equals(i.Name, item.Name, StringComparison.OrdinalIgnoreCase));
+      if (isExist)
+        throw new ArgumentException("item exists, can't be added");
 
-        _items.Add(item);
-        Console.WriteLine($"added {item.Name}\n");
-      }
+      Console.WriteLine($"Item to be added: {item}");
+      _items.Add(item);
+      Console.WriteLine($"added {item.Name}\n");
     }
     catch (ArgumentOutOfRangeException e)
     {

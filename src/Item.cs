@@ -32,5 +32,4 @@ public class Item
   {
     return $"Item Name: {Name}, Quantity: {Quantity}, Created Date: {CreatedDate}";
   }
-
 }
