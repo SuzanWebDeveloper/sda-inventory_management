@@ -65,23 +65,29 @@ public class Store
   }
   public Item? FindItemByName(string itemName)
   {
-    if (!string.IsNullOrEmpty(itemName))
+    try
     {
-      Item? itemFound = _items.FirstOrDefault(item => string.Equals(item.Name, itemName, StringComparison.OrdinalIgnoreCase));
-      if (itemFound != null)
-      {
-        Console.WriteLine($"item {itemName} is found");
-        return itemFound;
-      }
+      if (string.IsNullOrEmpty(itemName))
+        throw new ArgumentException("Item name is null or empty");
+
       else
       {
-        Console.WriteLine($"item {itemName} is not found");
-        return null;
+        Item? itemFound = _items.FirstOrDefault(item => string.Equals(item.Name, itemName, StringComparison.OrdinalIgnoreCase));
+        if (itemFound != null)
+        {
+          Console.WriteLine($"item {itemName} is found");
+          return itemFound;
+        }
+        else
+        {
+          Console.WriteLine($"item {itemName} is not found");
+          return null;
+        }
       }
     }
-    else
+    catch (System.Exception e)
     {
-      Console.WriteLine("Item name is null or empty");
+      Console.WriteLine(e.Message);
       return null;
     }
   }

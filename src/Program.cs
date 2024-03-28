@@ -50,7 +50,7 @@ public class Program
 
     //------------------------
 
-    var result = store.FindItemByName("umbrell");
+    var result = store.FindItemByName("");
     Console.WriteLine($"umbrella obj: {result}\n");
 
     int currentVolume = store.GetCurrentVolume();
